@@ -1,4 +1,4 @@
-﻿export type UserRole = "guest" | "receptionist" | "admin";
+export type UserRole = "guest" | "receptionist" | "admin";
 
 export type RoomStatus =
   | "available"
@@ -37,8 +37,8 @@ export interface Booking {
   services: string[];
   totalPrice: number;
   guestCount?: number;
-  paymentStatus?: "pending" | "paid" | "refunded";
-  paymentMethod?: string;
+  paymentStatus?: "pending" | "simulated" | "settled-demo" | "paid" | "refunded";
+  paymentMethod?: "card" | "pix" | "paypal" | "pay-at-hotel";
 }
 
 export interface HotelService {

@@ -1,27 +1,29 @@
 ﻿import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
   CreditCard,
+  Hotel,
   LoaderCircle,
-  LockKeyhole,
+  QrCode,
   ShieldCheck,
+  WalletCards,
 } from "lucide-react";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { useAuthStore } from "@/stores/auth-store";
 import { api } from "@/services/api";
 import { formatCurrency } from "@/lib/utils";
-import { getNights, hasDateConflict, isCardExpired, passesLuhn } from "@/lib/booking-utils";
+import { getNights, hasDateConflict } from "@/lib/booking-utils";
 import type { Booking, Guest, HotelService, Room, RoomStatus } from "@/types";
 import "./CheckoutPage.css";
 
 const TAX_RATE = 0.1;
+
+type PaymentMethod = NonNullable<Booking["paymentMethod"]>;
 
 interface CheckoutData {
   room: Room;
@@ -30,19 +32,53 @@ interface CheckoutData {
   guests: Guest[];
 }
 
-interface PaymentFormValues {
-  cardholder: string;
-  cardNumber: string;
-  expiry: string;
-  cvc: string;
-}
+const paymentMethods: {
+  id: PaymentMethod;
+  title: string;
+  description: string;
+  icon: typeof CreditCard;
+}[] = [
+  {
+    id: "card",
+    title: "Credit / Debit Card",
+    description: "Simulated card confirmation",
+    icon: CreditCard,
+  },
+  {
+    id: "pix",
+    title: "Pix",
+    description: "Illustrative QR code",
+    icon: QrCode,
+  },
+  {
+    id: "paypal",
+    title: "PayPal",
+    description: "Simulated authorization",
+    icon: WalletCards,
+  },
+  {
+    id: "pay-at-hotel",
+    title: "Pay at Hotel",
+    description: "Settle your balance at reception",
+    icon: Hotel,
+  },
+];
 
-const paymentSchema = z.object({
-  cardholder: z.string().trim().min(2, "Enter the cardholder's name."),
-  cardNumber: z.string().min(1, "Enter your card number."),
-  expiry: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Use MM/YY format."),
-  cvc: z.string().regex(/^\d{3,4}$/, "Enter a valid security code."),
-});
+const qrPattern = [
+  "1111111001011",
+  "1000001011010",
+  "1011101010111",
+  "1011101001001",
+  "1011101011101",
+  "1000001010010",
+  "1111111010101",
+  "0000000011010",
+  "1101011100111",
+  "0110100111000",
+  "1011011010110",
+  "0100110101101",
+  "1110011011011",
+];
 
 function getLocalDate() {
   const date = new Date();
@@ -77,9 +113,7 @@ async function fetchCheckoutData(roomId: string): Promise<CheckoutData> {
   };
 }
 
-function getNextRoomStatus(
-  currentStatus: RoomStatus,
-): RoomStatus {
+function getNextRoomStatus(currentStatus: RoomStatus): RoomStatus {
   return currentStatus === "cleaning" || currentStatus === "occupied"
     ? currentStatus
     : "booked";
@@ -98,6 +132,7 @@ export function CheckoutPage() {
     .split(",")
     .filter(Boolean);
 
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [paymentError, setPaymentError] = useState("");
   const [processing, setProcessing] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
@@ -113,15 +148,6 @@ export function CheckoutPage() {
     queryFn: () => fetchCheckoutData(roomId),
     enabled: Boolean(roomId),
     retry: 1,
-  });
-
-  const form = useForm<PaymentFormValues>({
-    defaultValues: {
-      cardholder: user?.name || "",
-      cardNumber: "",
-      expiry: "",
-      cvc: "",
-    },
   });
 
   const room = data?.room;
@@ -154,27 +180,8 @@ export function CheckoutPage() {
   const isRoomBlocked =
     room?.status === "cleaning" || room?.status === "occupied";
 
-  async function handlePayment(values: PaymentFormValues) {
+  async function handleReservation() {
     setPaymentError("");
-
-    const validation = paymentSchema.safeParse(values);
-
-    if (!validation.success) {
-      setPaymentError(validation.error.issues[0]?.message || "Check your payment details.");
-      return;
-    }
-
-    const cardNumber = values.cardNumber.replace(/\D/g, "");
-
-    if (!passesLuhn(cardNumber)) {
-      setPaymentError("The card number is not valid. Please check and try again.");
-      return;
-    }
-
-    if (isCardExpired(values.expiry)) {
-      setPaymentError("This card has expired. Please use another card.");
-      return;
-    }
 
     if (!room || !user || !data) {
       setPaymentError("Your reservation details could not be verified.");
@@ -196,11 +203,6 @@ export function CheckoutPage() {
       return;
     }
 
-    if (cardNumber.endsWith("0002")) {
-      setPaymentError("Your payment was declined by the simulated payment provider. Try another test card.");
-      return;
-    }
-
     setProcessing(true);
 
     let createdGuestId: string | null = null;
@@ -208,9 +210,7 @@ export function CheckoutPage() {
     try {
       const latestBookings = await api.get<Booking[]>("/bookings");
 
-      if (
-        hasDateConflict(room.id, checkIn, checkOut, latestBookings.data)
-      ) {
+      if (hasDateConflict(room.id, checkIn, checkOut, latestBookings.data)) {
         setPaymentError("These dates have just been reserved by someone else. Please select another period.");
         return;
       }
@@ -220,7 +220,6 @@ export function CheckoutPage() {
       );
 
       if (!guest) {
-
         const guestResponse = await api.post<Guest>("/guests", {
           name: user.name,
           email: user.email,
@@ -231,6 +230,9 @@ export function CheckoutPage() {
         createdGuestId = guestResponse.data.id;
       }
 
+      const paymentStatus: Booking["paymentStatus"] =
+        paymentMethod === "pay-at-hotel" ? "pending" : "simulated";
+
       const booking: Omit<Booking, "id"> = {
         guestId: guest.id,
         roomId: room.id,
@@ -240,8 +242,8 @@ export function CheckoutPage() {
         services: selectedServiceIds,
         totalPrice: Number(total.toFixed(2)),
         guestCount: guests,
-        paymentStatus: "paid",
-        paymentMethod: "card",
+        paymentStatus,
+        paymentMethod,
       };
 
       const previousRoomStatus = room.status;
@@ -289,7 +291,9 @@ export function CheckoutPage() {
           <span className="maison-eyebrow">Your reservation</span>
           <h1>Your stay details are missing.</h1>
           <p>Please return to the room collection and start your reservation again.</p>
-          <Link to="/rooms" className="checkout-primary-button">Explore rooms <ArrowRight size={16} /></Link>
+          <Link to="/rooms" className="checkout-primary-button">
+            Explore rooms <ArrowRight size={16} />
+          </Link>
         </main>
         <SiteFooter />
       </div>
@@ -302,7 +306,7 @@ export function CheckoutPage() {
         <SiteHeader />
         <main className="checkout-state" aria-live="polite">
           <LoaderCircle className="checkout-spinner" size={30} />
-          <p>Securely preparing your checkout...</p>
+          <p>Preparing your reservation...</p>
         </main>
         <SiteFooter />
       </div>
@@ -315,7 +319,7 @@ export function CheckoutPage() {
         <SiteHeader />
         <main className="checkout-state">
           <h1>We couldn't load your reservation.</h1>
-          <p>Please try again before submitting your payment.</p>
+          <p>Please try again before confirming your stay.</p>
           <button
             className="checkout-primary-button"
             type="button"
@@ -331,14 +335,22 @@ export function CheckoutPage() {
   }
 
   if (confirmedBooking) {
+    const isPayAtHotel = confirmedBooking.paymentMethod === "pay-at-hotel";
+
     return (
       <div className="checkout-page">
         <SiteHeader />
         <main className="checkout-success">
-          <div className="checkout-success__icon"><CheckCircle2 size={35} /></div>
+          <div className="checkout-success__icon">
+            <CheckCircle2 size={35} />
+          </div>
           <span className="maison-eyebrow">Reservation confirmed</span>
           <h1>It's a date with Maison.</h1>
-          <p>Your payment was successful and your stay is confirmed. We look forward to welcoming you.</p>
+          <p>
+            {isPayAtHotel
+              ? "Your stay is confirmed. You can settle your balance when you arrive at the hotel."
+              : "Your reservation is confirmed in our demo environment. No payment was processed or charged."}
+          </p>
           <div className="checkout-success__reference">
             <span>BOOKING REFERENCE</span>
             <strong>{confirmedBooking.id}</strong>
@@ -347,7 +359,9 @@ export function CheckoutPage() {
             <div><span>Accommodation</span><strong>{room.name}</strong></div>
             <div><span>Arrival</span><strong>{formatDate(checkIn)}</strong></div>
             <div><span>Departure</span><strong>{formatDate(checkOut)}</strong></div>
-            <div><span>Total paid</span><strong>{formatCurrency(confirmedBooking.totalPrice)}</strong></div>
+            <div><span>Payment method</span><strong>{paymentMethods.find((method) => method.id === confirmedBooking.paymentMethod)?.title}</strong></div>
+            <div><span>Payment status</span><strong>{isPayAtHotel ? "Pending at hotel" : "Demo confirmed"}</strong></div>
+            <div><span>Reservation total</span><strong>{formatCurrency(confirmedBooking.totalPrice)}</strong></div>
           </div>
           <Link to="/my-bookings" className="checkout-primary-button">
             View my bookings <ArrowRight size={16} />
@@ -370,7 +384,7 @@ export function CheckoutPage() {
         <section className="checkout-heading">
           <span className="maison-eyebrow">Almost there</span>
           <h1>A seamless finish.</h1>
-          <p>Review your reservation and complete your payment securely.</p>
+          <p>Choose how you would like to complete your reservation.</p>
         </section>
 
         <div className="checkout-progress">
@@ -383,131 +397,152 @@ export function CheckoutPage() {
           <section className="checkout-payment-panel">
             <div className="checkout-panel-heading">
               <div>
-                <span className="maison-eyebrow">Payment details</span>
-                <h2>Card information</h2>
+                <span className="maison-eyebrow">Payment options</span>
+                <h2>Choose your method</h2>
               </div>
-              <CreditCard size={23} />
+              <WalletCards size={23} />
             </div>
 
             <div className="checkout-demo-note">
               <ShieldCheck size={17} />
               <div>
-                <strong>Simulated payment environment</strong>
-                <span>Use a valid test card number. No real payment will be made.</span>
+                <strong>Demonstration environment</strong>
+                <span>No real payments, external transactions or charges are made on this website.</span>
               </div>
             </div>
 
-            <form
-              className="checkout-form"
-              onSubmit={form.handleSubmit(handlePayment)}
-              noValidate
-            >
-              <div className="checkout-field">
-                <label htmlFor="checkout-cardholder">Cardholder name</label>
-                <input
-                  id="checkout-cardholder"
-                  autoComplete="cc-name"
-                  placeholder="Name on card"
-                  {...form.register("cardholder")}
-                />
-                {form.formState.errors.cardholder && (
-                  <small role="alert">{form.formState.errors.cardholder.message}</small>
-                )}
-              </div>
+            <div className="checkout-methods" role="group" aria-label="Payment method">
+              {paymentMethods.map((method) => {
+                const Icon = method.icon;
+                const isSelected = paymentMethod === method.id;
 
-              <div className="checkout-field">
-                <label htmlFor="checkout-card-number">Card number</label>
-                <input
-                  id="checkout-card-number"
-                  inputMode="numeric"
-                  autoComplete="cc-number"
-                  placeholder="4242 4242 4242 4242"
-                  maxLength={23}
-                  {...form.register("cardNumber", {
-                    onChange: (event) => {
-                      const digits = event.target.value.replace(/\D/g, "").slice(0, 19);
-                      event.target.value = digits.replace(/(.{4})/g, "$1 ").trim();
-                    },
-                  })}
-                />
-              </div>
+                return (
+                  <button
+                    className={`checkout-method${isSelected ? " checkout-method--selected" : ""}`}
+                    type="button"
+                    key={method.id}
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      setPaymentMethod(method.id);
+                      setPaymentError("");
+                    }}
+                  >
+                    <span className="checkout-method__icon"><Icon size={20} /></span>
+                    <span className="checkout-method__copy">
+                      <strong>{method.title}</strong>
+                      <small>{method.description}</small>
+                    </span>
+                    <span className="checkout-method__radio" />
+                  </button>
+                );
+              })}
+            </div>
 
-              <div className="checkout-field-grid">
-                <div className="checkout-field">
-                  <label htmlFor="checkout-expiry">Expiry date</label>
-                  <input
-                    id="checkout-expiry"
-                    placeholder="MM/YY"
-                    autoComplete="cc-exp"
-                    maxLength={5}
-                    {...form.register("expiry", {
-                      onChange: (event) => {
-                        const digits = event.target.value.replace(/\D/g, "").slice(0, 4);
-                        event.target.value = digits.length > 2
-                          ? `${digits.slice(0, 2)}/${digits.slice(2)}`
-                          : digits;
-                      },
-                    })}
-                  />
+            <div className="checkout-method-detail" aria-live="polite">
+              {paymentMethod === "card" && (
+                <div className="checkout-demo-detail">
+                  <div className="checkout-detail-heading">
+                    <CreditCard size={19} />
+                    <h3>Card payment simulation</h3>
+                  </div>
+                  <div className="checkout-demo-card">
+                    <div className="checkout-demo-card__top">
+                      <span>MAISON</span>
+                      <CreditCard size={25} />
+                    </div>
+                    <strong>•••• &nbsp; •••• &nbsp; •••• &nbsp; 4242</strong>
+                    <div className="checkout-demo-card__bottom">
+                      <span>DEMO CARD</span>
+                      <span>NO CHARGE</span>
+                    </div>
+                  </div>
+                  <p>This is a visual card preview only. No card details are requested or stored.</p>
                 </div>
-                <div className="checkout-field">
-                  <label htmlFor="checkout-cvc">Security code</label>
-                  <input
-                    id="checkout-cvc"
-                    type="password"
-                    inputMode="numeric"
-                    autoComplete="cc-csc"
-                    placeholder="CVC"
-                    maxLength={4}
-                    {...form.register("cvc")}
-                  />
+              )}
+
+              {paymentMethod === "pix" && (
+                <div className="checkout-demo-detail checkout-pix-detail">
+                  <div className="checkout-detail-heading">
+                    <QrCode size={19} />
+                    <h3>Pix payment simulation</h3>
+                  </div>
+                  <div className="checkout-qr" aria-label="Illustrative QR pattern, not a valid Pix code">
+                    {qrPattern.join("").split("").map((cell, index) => (
+                      <span className={cell === "1" ? "checkout-qr__cell checkout-qr__cell--dark" : "checkout-qr__cell"} key={index} />
+                    ))}
+                  </div>
+                  <strong>Illustrative QR code</strong>
+                  <p>This pattern is decorative and cannot be scanned or used to make a Pix transfer.</p>
                 </div>
-              </div>
-
-              {paymentError && (
-                <p className="checkout-error" role="alert">{paymentError}</p>
               )}
 
-              {!datesAreValid && (
-                <p className="checkout-error" role="alert">
-                  Your selected dates are invalid. Return to your stay details.
-                </p>
+              {paymentMethod === "paypal" && (
+                <div className="checkout-demo-detail">
+                  <div className="checkout-detail-heading">
+                    <WalletCards size={19} />
+                    <h3>PayPal authorization simulation</h3>
+                  </div>
+                  <div className="checkout-paypal-mark">PayPal</div>
+                  <p>Continue to simulate an authorization. No PayPal account or external service is contacted.</p>
+                </div>
               )}
 
-              {hasConflict && (
-                <p className="checkout-error" role="alert">
-                  This room is no longer available for the selected dates.
-                </p>
+              {paymentMethod === "pay-at-hotel" && (
+                <div className="checkout-demo-detail">
+                  <div className="checkout-detail-heading">
+                    <Hotel size={19} />
+                    <h3>Settle your balance at the hotel</h3>
+                  </div>
+                  <p>Your reservation will be confirmed now. Payment will remain pending until it is handled at reception.</p>
+                  <span className="checkout-pending-note">Payment due at the hotel</span>
+                </div>
               )}
+            </div>
 
-              {isRoomBlocked && (
-                <p className="checkout-error" role="alert">
-                  This room is currently unavailable.
-                </p>
-              )}
+            {paymentError && (
+              <p className="checkout-error" role="alert">{paymentError}</p>
+            )}
 
-              <button
-                className="checkout-primary-button checkout-pay-button"
-                type="submit"
-                disabled={
-                  processing ||
-                  !datesAreValid ||
-                  hasConflict ||
-                  isRoomBlocked
-                }
-              >
-                {processing ? (
-                  <><LoaderCircle className="checkout-spinner" size={17} /> Processing payment...</>
-                ) : (
-                  <><LockKeyhole size={16} /> Pay {formatCurrency(total)}</>
-                )}
-              </button>
-
-              <p className="checkout-security-note">
-                <LockKeyhole size={13} />
-                Your payment information is used only for this simulated checkout.
+            {!datesAreValid && (
+              <p className="checkout-error" role="alert">
+                Your selected dates are invalid. Return to your stay details.
               </p>
-            </form>
+            )}
+
+            {hasConflict && (
+              <p className="checkout-error" role="alert">
+                This room is no longer available for the selected dates.
+              </p>
+            )}
+
+            {isRoomBlocked && (
+              <p className="checkout-error" role="alert">
+                This room is currently unavailable.
+              </p>
+            )}
+
+            <button
+              className="checkout-primary-button checkout-pay-button"
+              type="button"
+              onClick={() => void handleReservation()}
+              disabled={
+                processing ||
+                !datesAreValid ||
+                hasConflict ||
+                isRoomBlocked
+              }
+            >
+              {processing ? (
+                <><LoaderCircle className="checkout-spinner" size={17} /> Confirming reservation...</>
+              ) : (
+                <><CheckCircle2 size={16} /> {paymentMethod === "pay-at-hotel" ? "Confirm reservation" : `Simulate ${paymentMethods.find((method) => method.id === paymentMethod)?.title} payment`}</>
+              )}
+            </button>
+
+            <p className="checkout-security-note">
+              <ShieldCheck size={13} />
+              Demo only. No payment information is collected or processed.
+            </p>
           </section>
 
           <aside className="checkout-order">
@@ -538,12 +573,12 @@ export function CheckoutPage() {
             </div>
 
             <div className="checkout-order__total">
-              <span>Total</span>
+              <span>Reservation total</span>
               <strong>{formatCurrency(total)}</strong>
             </div>
 
             <p className="checkout-order__note">
-              By completing payment, you confirm that your reservation details are correct.
+              This is a demonstration reservation. No payment or charge will be made.
             </p>
           </aside>
         </div>
@@ -553,7 +588,3 @@ export function CheckoutPage() {
     </div>
   );
 }
-
-
-
-

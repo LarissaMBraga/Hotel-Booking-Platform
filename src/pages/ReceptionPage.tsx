@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CalendarDays, CheckCircle2, Clock3, LogIn, LogOut, RefreshCw } from "lucide-react";
 import { api } from "@/services/api";
@@ -57,7 +57,7 @@ export function ReceptionPage() {
         if (room) await api.patch(`/rooms/${room.id}`, { status: "occupied" });
       }
       if (action === "check-out") {
-        await api.patch(`/bookings/${booking.id}`, { status: "completed", paymentStatus: "paid" });
+        await api.patch(`/bookings/${booking.id}`, { status: "completed", paymentStatus: booking.paymentStatus === "pending" ? "settled-demo" : booking.paymentStatus });
         if (room) await api.patch(`/rooms/${room.id}`, { status: "cleaning" });
       }
       if (action === "cancel") {

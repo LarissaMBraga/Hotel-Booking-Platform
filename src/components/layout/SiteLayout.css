@@ -1,7 +1,8 @@
 
 .site-header {
-  position: relative;
-  z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   width: 100%;
   background: #faf9f6;
   border-bottom: 1px solid #eeeae3;
