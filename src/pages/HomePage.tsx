@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
@@ -177,7 +177,6 @@ export function HomePage() {
         <section className="maison-intro" id="story">
           <div className="maison-intro__side">
             <span className="maison-eyebrow">The Maison philosophy</span>
-            <span className="maison-intro__number">01 / 03</span>
           </div>
 
           <div className="maison-intro__main">
@@ -188,16 +187,17 @@ export function HomePage() {
               <br />
               <em>to belong.</em>
             </h2>
-            <div className="maison-intro__bottom">
-              <p>
-                We believe the best journeys are made of little things.
-                A welcoming space, thoughtful details and the freedom to
-                experience every destination your own way.
-              </p>
-              <a href="#rooms" className="maison-text-link">
-                Get to know us <ArrowUpRight size={16} />
-              </a>
-            </div>
+          </div>
+
+          <div className="maison-intro__bottom">
+            <p>
+              We believe the best journeys are made of little things.
+              A welcoming space, thoughtful details and the freedom to
+              experience every destination your own way.
+            </p>
+            <a href="#rooms" className="maison-text-link">
+              Get to know us <ArrowUpRight size={16} />
+            </a>
           </div>
         </section>
 
