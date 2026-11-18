@@ -1,11 +1,3 @@
-﻿import { PagePlaceholder } from "@/components/layout/PagePlaceholder";
+﻿import { LoginPage } from "@/pages/AuthPages";
 
-export function LoginPage() {
-  return (
-    <PagePlaceholder
-      eyebrow="Welcome back"
-      title="Your stay awaits."
-      description="Sign in to access your hotel booking account."
-    />
-  );
-}
+export { LoginPage };

@@ -1,4 +1,5 @@
-﻿import { ArrowUpRight } from "lucide-react";
+﻿
+import { ArrowUp, ArrowUpRight, GitBranch } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function SiteFooter() {
@@ -10,6 +11,7 @@ export default function SiteFooter() {
             <span className="brand__name">MAISON</span>
             <span className="brand__caption">HOTELS & RESIDENCES</span>
           </Link>
+
           <p className="site-footer__description">
             Thoughtful stays, considered details, and places that make every
             journey feel a little more like home.
@@ -40,8 +42,37 @@ export default function SiteFooter() {
       </div>
 
       <div className="site-footer__bottom">
-        <span>© {new Date().getFullYear()} Maison Hotels & Residences</span>
-        <span>Made for the art of staying well.</span>
+        <span>
+          © {new Date().getFullYear()} Maison Hotels & Residences
+        </span>
+
+        <div className="site-footer__credits">
+          <span>
+            Designed & developed by <strong>Larissa Moreira Braga</strong>
+          </span>
+
+          <a
+            className="site-footer__github"
+            href="https://github.com/LarissaMBraga/Hotel-Booking-Platform"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Maison project on GitHub"
+          >
+            <GitBranch  size={15} />
+            <span>GitHub</span>
+            <ArrowUpRight size={13} />
+          </a>
+        </div>
+
+        <button
+          className="site-footer__back-to-top"
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Back to top"
+        >
+          <span>Back to top</span>
+          <ArrowUp size={14} />
+        </button>
       </div>
     </footer>
   );
