@@ -571,3 +571,137 @@
     padding: 60px 24px;
   }
 }
+.rooms-price-filter {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.3fr);
+  align-items: center;
+  gap: 35px;
+  margin: 0 0 30px;
+  padding: 22px 25px;
+  border: 1px solid #e8e4dc;
+  background: #fff;
+}
+
+.rooms-price-filter__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.rooms-price-filter__eyebrow {
+  color: #9a8058;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.rooms-price-filter__heading h3 {
+  margin: 7px 0 0;
+  color: #343638;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.rooms-price-filter__value {
+  color: #8d806e;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.rooms-price-filter__sliders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.rooms-price-filter__sliders label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #77736c;
+  font-size: 10px;
+}
+
+.rooms-price-filter__sliders input {
+  width: 100%;
+  accent-color: #a88b5c;
+  cursor: pointer;
+}
+
+.rooms-pagination__summary {
+  margin: 0 0 18px;
+  color: #8d806e;
+  font-size: 10px;
+  letter-spacing: .5px;
+}
+
+.rooms-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.rooms-pagination button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid #e6e1d8;
+  background: #fff;
+  color: #55514a;
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.rooms-pagination button:hover:not(:disabled),
+.rooms-pagination button.rooms-pagination__active {
+  border-color: #292d32;
+  background: #292d32;
+  color: #fff;
+}
+
+.rooms-pagination button:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .rooms-price-filter {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .rooms-price-filter {
+    gap: 18px;
+    padding: 18px 15px;
+  }
+
+  .rooms-price-filter__sliders {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .rooms-price-filter__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rooms-pagination {
+    gap: 5px;
+    margin-top: 35px;
+  }
+
+  .rooms-pagination button {
+    width: 35px;
+    height: 35px;
+  }
+}

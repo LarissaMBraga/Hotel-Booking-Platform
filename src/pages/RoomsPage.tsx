@@ -6,6 +6,8 @@ import {
   ArrowRight,
   CalendarDays,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Filter,
   Search,
   SlidersHorizontal,
@@ -22,7 +24,9 @@ import "./RoomsPage.css";
 
 type SortOption = "recommended" | "price-low" | "price-high" | "rating";
 
-type PriceRange = "all" | "under-250" | "250-400" | "over-400";
+const MIN_PRICE = 0;
+const MAX_PRICE = 700;
+const PAGE_SIZE = 4;
 
 async function fetchRooms(): Promise<Room[]> {
   const response = await api.get<Room[]>("/rooms");
@@ -41,6 +45,12 @@ function getLocalDate() {
   const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+
+function getNumberParam(value: string | null, fallback: number) {
+  if (!value) return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 function hasDateConflict(
@@ -70,9 +80,26 @@ export function RoomsPage() {
   const [guests, setGuests] = useState(
     () => searchParams.get("guests") ?? "2",
   );
-  const [roomType, setRoomType] = useState("all");
-  const [priceRange, setPriceRange] = useState<PriceRange>("all");
-  const [sortBy, setSortBy] = useState<SortOption>("recommended");
+  const [roomType, setRoomType] = useState(
+    () => searchParams.get("type") ?? "all",
+  );
+  const [minPrice, setMinPrice] = useState(() =>
+    Math.max(MIN_PRICE, getNumberParam(searchParams.get("minPrice"), MIN_PRICE)),
+  );
+  const [maxPrice, setMaxPrice] = useState(() =>
+    Math.min(MAX_PRICE, getNumberParam(searchParams.get("maxPrice"), MAX_PRICE)),
+  );
+  const [sortBy, setSortBy] = useState<SortOption>(() => {
+    const value = searchParams.get("sort");
+    return value === "price-low" ||
+      value === "price-high" ||
+      value === "rating"
+      ? value
+      : "recommended";
+  });
+  const [currentPage, setCurrentPage] = useState(() =>
+    Math.max(1, getNumberParam(searchParams.get("page"), 1)),
+  );
   const [searchError, setSearchError] = useState("");
 
   const {
@@ -127,48 +154,25 @@ export function RoomsPage() {
         return false;
       }
 
-      if (
-        priceRange === "under-250" &&
-        room.pricePerNight >= 250
-      ) {
-        return false;
-      }
-
-      if (
-        priceRange === "250-400" &&
-        (room.pricePerNight < 250 || room.pricePerNight > 400)
-      ) {
-        return false;
-      }
-
-      if (
-        priceRange === "over-400" &&
-        room.pricePerNight <= 400
-      ) {
+      if (room.pricePerNight < minPrice || room.pricePerNight > maxPrice) {
         return false;
       }
 
       return true;
     });
 
-    switch (sortBy) {
-      case "price-low":
-        return filtered.sort(
-          (first, second) => first.pricePerNight - second.pricePerNight,
-        );
-      case "price-high":
-        return filtered.sort(
-          (first, second) => second.pricePerNight - first.pricePerNight,
-        );
-      case "rating":
-        return filtered.sort(
-          (first, second) => second.rating - first.rating,
-        );
-      default:
-        return filtered.sort(
-          (first, second) => second.rating - first.rating,
-        );
-    }
+    return filtered.sort((first, second) => {
+      switch (sortBy) {
+        case "price-low":
+          return first.pricePerNight - second.pricePerNight;
+        case "price-high":
+          return second.pricePerNight - first.pricePerNight;
+        case "rating":
+          return second.rating - first.rating;
+        default:
+          return second.rating - first.rating;
+      }
+    });
   }, [
     rooms,
     bookings,
@@ -177,7 +181,8 @@ export function RoomsPage() {
     checkOut,
     validDateRange,
     roomType,
-    priceRange,
+    minPrice,
+    maxPrice,
     sortBy,
   ]);
 
@@ -185,6 +190,28 @@ export function RoomsPage() {
     () => Array.from(new Set(rooms.map((room) => room.type))),
     [rooms],
   );
+
+  const totalPages = Math.max(1, Math.ceil(availableRooms.length / PAGE_SIZE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+
+  const paginatedRooms = useMemo(() => {
+    const startIndex = (safeCurrentPage - 1) * PAGE_SIZE;
+    return availableRooms.slice(startIndex, startIndex + PAGE_SIZE);
+  }, [availableRooms, safeCurrentPage]);
+
+  function updateUrl(patch: Record<string, string | null>) {
+    const nextParams = new URLSearchParams(searchParams);
+
+    Object.entries(patch).forEach(([key, value]) => {
+      if (value === null || value === "") {
+        nextParams.delete(key);
+      } else {
+        nextParams.set(key, value);
+      }
+    });
+
+    setSearchParams(nextParams, { replace: true });
+  }
 
   function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -200,19 +227,69 @@ export function RoomsPage() {
       return;
     }
 
-    const params = new URLSearchParams();
+    setCurrentPage(1);
+    updateUrl({
+      checkIn: checkIn || null,
+      checkOut: checkOut || null,
+      guests,
+      page: null,
+    });
+  }
 
-    if (checkIn) params.set("checkIn", checkIn);
-    if (checkOut) params.set("checkOut", checkOut);
+  function handleRoomTypeChange(value: string) {
+    setRoomType(value);
+    setCurrentPage(1);
+    updateUrl({ type: value === "all" ? null : value, page: null });
+  }
 
-    params.set("guests", guests);
-    setSearchParams(params);
+  function handlePriceChange(nextMin: number, nextMax: number) {
+    const safeMin = Math.min(nextMin, nextMax);
+    const safeMax = Math.max(nextMin, nextMax);
+
+    setMinPrice(safeMin);
+    setMaxPrice(safeMax);
+    setCurrentPage(1);
+    updateUrl({
+      minPrice: safeMin === MIN_PRICE ? null : String(safeMin),
+      maxPrice: safeMax === MAX_PRICE ? null : String(safeMax),
+      page: null,
+    });
+  }
+
+  function handleSortChange(value: SortOption) {
+    setSortBy(value);
+    setCurrentPage(1);
+    updateUrl({
+      sort: value === "recommended" ? null : value,
+      page: null,
+    });
+  }
+
+  function handlePageChange(page: number) {
+    const nextPage = Math.max(1, Math.min(page, totalPages));
+    setCurrentPage(nextPage);
+    updateUrl({
+      page: nextPage === 1 ? null : String(nextPage),
+    });
+    document.querySelector(".rooms-results")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   }
 
   function clearFilters() {
     setRoomType("all");
-    setPriceRange("all");
+    setMinPrice(MIN_PRICE);
+    setMaxPrice(MAX_PRICE);
     setSortBy("recommended");
+    setCurrentPage(1);
+    updateUrl({
+      type: null,
+      minPrice: null,
+      maxPrice: null,
+      sort: null,
+      page: null,
+    });
   }
 
   function clearSearch() {
@@ -220,11 +297,22 @@ export function RoomsPage() {
     setCheckOut("");
     setGuests("2");
     setSearchError("");
+    setCurrentPage(1);
     setSearchParams({});
+    clearFilters();
   }
 
   const activeFilters =
-    roomType !== "all" || priceRange !== "all";
+    roomType !== "all" ||
+    minPrice !== MIN_PRICE ||
+    maxPrice !== MAX_PRICE;
+
+  const firstVisibleRoom =
+    availableRooms.length === 0 ? 0 : (safeCurrentPage - 1) * PAGE_SIZE + 1;
+  const lastVisibleRoom = Math.min(
+    safeCurrentPage * PAGE_SIZE,
+    availableRooms.length,
+  );
 
   return (
     <>
@@ -251,7 +339,7 @@ export function RoomsPage() {
             </p>
           </div>
 
-          <span className="rooms-hero__index">01 â€” THE COLLECTION</span>
+          <span className="rooms-hero__index">01 — THE COLLECTION</span>
         </section>
 
         <section className="rooms-search-section">
@@ -343,7 +431,7 @@ export function RoomsPage() {
                 <span className="sr-only">Room category</span>
                 <select
                   value={roomType}
-                  onChange={(event) => setRoomType(event.target.value)}
+                  onChange={(event) => handleRoomTypeChange(event.target.value)}
                 >
                   <option value="all">All categories</option>
                   {roomTypes.map((type) => (
@@ -351,21 +439,6 @@ export function RoomsPage() {
                       {type}
                     </option>
                   ))}
-                </select>
-              </label>
-
-              <label className="rooms-filter">
-                <span className="sr-only">Price range</span>
-                <select
-                  value={priceRange}
-                  onChange={(event) =>
-                    setPriceRange(event.target.value as PriceRange)
-                  }
-                >
-                  <option value="all">All prices</option>
-                  <option value="under-250">Under $250</option>
-                  <option value="250-400">$250 â€“ $400</option>
-                  <option value="over-400">Over $400</option>
                 </select>
               </label>
 
@@ -387,7 +460,7 @@ export function RoomsPage() {
               <select
                 value={sortBy}
                 onChange={(event) =>
-                  setSortBy(event.target.value as SortOption)
+                  handleSortChange(event.target.value as SortOption)
                 }
               >
                 <option value="recommended">Recommended</option>
@@ -398,9 +471,52 @@ export function RoomsPage() {
             </label>
           </div>
 
+          <section className="rooms-price-filter" aria-label="Price filter">
+            <div className="rooms-price-filter__heading">
+              <div>
+                <span className="rooms-price-filter__eyebrow">Your budget</span>
+                <h3>Price per night</h3>
+              </div>
+              <span className="rooms-price-filter__value">
+                ${minPrice} – ${maxPrice === MAX_PRICE ? `${MAX_PRICE}+` : maxPrice}
+              </span>
+            </div>
+
+            <div className="rooms-price-filter__sliders">
+              <label>
+                <span>Minimum price: ${minPrice}</span>
+                <input
+                  type="range"
+                  min={MIN_PRICE}
+                  max={MAX_PRICE}
+                  step={10}
+                  value={minPrice}
+                  aria-label="Minimum price per night"
+                  onChange={(event) =>
+                    handlePriceChange(Number(event.target.value), maxPrice)
+                  }
+                />
+              </label>
+              <label>
+                <span>Maximum price: ${maxPrice}</span>
+                <input
+                  type="range"
+                  min={MIN_PRICE}
+                  max={MAX_PRICE}
+                  step={10}
+                  value={maxPrice}
+                  aria-label="Maximum price per night"
+                  onChange={(event) =>
+                    handlePriceChange(minPrice, Number(event.target.value))
+                  }
+                />
+              </label>
+            </div>
+          </section>
+
           {loading && (
             <div className="rooms-grid" aria-label="Loading rooms">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
+              {[1, 2, 3, 4].map((item) => (
                 <div className="rooms-skeleton" key={item}>
                   <div className="rooms-skeleton__image" />
                   <div className="rooms-skeleton__line" />
@@ -432,11 +548,59 @@ export function RoomsPage() {
           )}
 
           {!loading && !hasError && availableRooms.length > 0 && (
-            <div className="rooms-grid">
-              {availableRooms.map((room) => (
-                <RoomCard room={room} key={room.id} />
-              ))}
-            </div>
+            <>
+              <div className="rooms-pagination__summary" aria-live="polite">
+                Showing {firstVisibleRoom}–{lastVisibleRoom} of{" "}
+                {availableRooms.length} spaces
+              </div>
+
+              <div className="rooms-grid">
+                {paginatedRooms.map((room) => (
+                  <RoomCard room={room} key={room.id} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <nav className="rooms-pagination" aria-label="Room pages">
+                  <button
+                    type="button"
+                    aria-label="Previous page"
+                    disabled={safeCurrentPage === 1}
+                    onClick={() => handlePageChange(safeCurrentPage - 1)}
+                  >
+                    <ChevronLeft size={17} />
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                    (page) => (
+                      <button
+                        type="button"
+                        key={page}
+                        aria-label={`Page ${page}`}
+                        aria-current={page === safeCurrentPage ? "page" : undefined}
+                        className={
+                          page === safeCurrentPage
+                            ? "rooms-pagination__active"
+                            : ""
+                        }
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+
+                  <button
+                    type="button"
+                    aria-label="Next page"
+                    disabled={safeCurrentPage === totalPages}
+                    onClick={() => handlePageChange(safeCurrentPage + 1)}
+                  >
+                    <ChevronRight size={17} />
+                  </button>
+                </nav>
+              )}
+            </>
           )}
 
           {!loading && !hasError && availableRooms.length === 0 && (
@@ -446,8 +610,8 @@ export function RoomsPage() {
               </span>
               <h3>No spaces found just yet.</h3>
               <p>
-                Try adjusting your dates or filters to discover more
-                possibilities.
+                Try adjusting your dates, guest count or filters to discover
+                more possibilities.
               </p>
               <div className="rooms-state__actions">
                 <button type="button" onClick={clearFilters}>

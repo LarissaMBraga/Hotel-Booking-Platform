@@ -339,3 +339,221 @@
     align-items: flex-start;
   }
 }
+
+.theme-toggle,
+.header-logout {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #e8e3da;
+  border-radius: 50%;
+  background: transparent;
+  color: #55534d;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.theme-toggle:hover,
+.header-logout:hover {
+  border-color: #a88b5c;
+  background: rgba(168, 139, 92, 0.08);
+  color: #a88b5c;
+}
+
+.header-user {
+  gap: 8px;
+}
+
+.header-user__dashboard {
+  padding-left: 8px;
+  border-left: 1px solid #e8e3da;
+  color: #a88b5c;
+  font-size: 10px;
+}
+
+.mobile-nav__theme,
+.mobile-nav__logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 0;
+  border: 0;
+  border-bottom: 1px solid #eeeae3;
+  background: transparent;
+  color: #55534d;
+  text-align: left;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .site-header__inner {
+    gap: 18px;
+  }
+
+  .site-header__actions {
+    gap: 10px;
+  }
+
+  .header-user__dashboard {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .mobile-nav__theme,
+  .mobile-nav__logout {
+    font: inherit;
+    font-size: 12px;
+  }
+}
+
+:root[data-theme="dark"] .site-header {
+  background: #20211e;
+  border-bottom-color: #383832;
+}
+
+:root[data-theme="dark"] .brand,
+:root[data-theme="dark"] .site-nav__link,
+:root[data-theme="dark"] .header-signin {
+  color: #e8e4da;
+}
+
+:root[data-theme="dark"] .site-nav__link:hover,
+:root[data-theme="dark"] .header-signin:hover {
+  color: #d6c29e;
+}
+
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .header-logout {
+  border-color: #49483f;
+  color: #e8e4da;
+}
+
+:root[data-theme="dark"] .theme-toggle:hover,
+:root[data-theme="dark"] .header-logout:hover {
+  border-color: #b69b70;
+  color: #d6c29e;
+}
+
+:root[data-theme="dark"] .header-user__dashboard {
+  border-left-color: #49483f;
+  color: #d6c29e;
+}
+
+:root[data-theme="dark"] .mobile-menu-toggle {
+  border-color: #49483f;
+  color: #e8e4da;
+}
+
+:root[data-theme="dark"] .mobile-nav {
+  border-top-color: #383832;
+  background: #20211e;
+}
+
+:root[data-theme="dark"] .mobile-nav > a:not(.button),
+:root[data-theme="dark"] .mobile-nav__theme,
+:root[data-theme="dark"] .mobile-nav__logout {
+  border-bottom-color: #383832;
+  color: #e8e4da;
+}
+
+/* MAISON THEME SLIDER */
+
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  width: 62px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  overflow: hidden;
+  border: 1px solid #e4ded2;
+  border-radius: 999px;
+  background: #eeeae2;
+  color: #8d754e;
+  cursor: pointer;
+  transition: background 220ms ease, border-color 220ms ease;
+}
+
+.theme-toggle__icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  transition: color 220ms ease;
+}
+
+.theme-toggle__icon--sun {
+  color: #a88b5c;
+}
+
+.theme-toggle__icon--moon {
+  color: #77766f;
+}
+
+.theme-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  transition: transform 240ms cubic-bezier(.2, .8, .2, 1), background 220ms ease;
+}
+
+.theme-toggle.is-dark {
+  border-color: #555044;
+  background: #34352f;
+}
+
+.theme-toggle.is-dark .theme-toggle__thumb {
+  background: #c5aa7c;
+  transform: translateX(30px);
+}
+
+.theme-toggle.is-dark .theme-toggle__icon--sun {
+  color: #77766f;
+}
+
+.theme-toggle.is-dark .theme-toggle__icon--moon {
+  color: #292b26;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #a88b5c;
+  outline-offset: 4px;
+}
+
+.mobile-nav__theme {
+  justify-content: space-between;
+}
+
+.mobile-nav__theme .theme-toggle {
+  width: 62px;
+  height: 32px;
+  padding: 0 8px;
+}
+
+:root[data-theme="dark"] .mobile-nav__theme {
+  border-bottom-color: #383832;
+  color: #e8e4da;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle,
+  .theme-toggle__thumb,
+  .theme-toggle__icon {
+    transition: none;
+  }
+}

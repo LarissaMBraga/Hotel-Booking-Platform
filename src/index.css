@@ -699,3 +699,165 @@ a {
     padding: 65px 24px;
   }
 }
+
+/* MAISON DARK THEME */
+
+:root {
+  color-scheme: light;
+  --maison-page: #faf9f6;
+  --maison-surface: #ffffff;
+  --maison-surface-muted: #f1efe9;
+  --maison-text: #292b26;
+  --maison-text-muted: #77766f;
+  --maison-border: #e8e3da;
+  --maison-accent: #a88b5c;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --maison-page: #191a18;
+  --maison-surface: #242521;
+  --maison-surface-muted: #20211e;
+  --maison-text: #eeeae1;
+  --maison-text-muted: #aaa69b;
+  --maison-border: #3b3b34;
+  --maison-accent: #c5aa7c;
+  color: var(--maison-text);
+  background: var(--maison-page);
+}
+
+:root[data-theme="dark"] body {
+  background: var(--maison-page);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] ::selection {
+  background: #806b49;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .maison-intro,
+:root[data-theme="dark"] .maison-quote {
+  background: var(--maison-page);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .maison-intro h2,
+:root[data-theme="dark"] .maison-section-heading h2,
+:root[data-theme="dark"] .maison-quote blockquote,
+:root[data-theme="dark"] .maison-cta h2 {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .maison-intro__bottom p,
+:root[data-theme="dark"] .maison-room-card__description {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .maison-rooms {
+  background: #20211e;
+}
+
+:root[data-theme="dark"] .room-card {
+  background: var(--maison-surface);
+}
+
+:root[data-theme="dark"] .room-card__heading h3,
+:root[data-theme="dark"] .room-card__price strong {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .room-card__description,
+:root[data-theme="dark"] .room-card__meta,
+:root[data-theme="dark"] .room-card__price {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .room-card__bottom {
+  border-top-color: var(--maison-border);
+}
+
+:root[data-theme="dark"] .maison-state {
+  background: var(--maison-surface);
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .maison-cta {
+  background: #302f29;
+}
+
+:root[data-theme="dark"] .maison-search {
+  background: var(--maison-surface);
+}
+
+:root[data-theme="dark"] .maison-search__field {
+  border-right-color: var(--maison-border);
+}
+
+:root[data-theme="dark"] .maison-search__value,
+:root[data-theme="dark"] .maison-search input,
+:root[data-theme="dark"] .maison-search select {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .maison-search input::placeholder {
+  color: #aaa69b;
+}
+
+:root[data-theme="dark"] .maison-search__field {
+  border-bottom-color: var(--maison-border);
+}
+
+:root[data-theme="dark"] .maison-room-skeleton {
+  background: var(--maison-surface);
+}
+
+:root[data-theme="dark"] .maison-room-skeleton div,
+:root[data-theme="dark"] .maison-room-skeleton span {
+  background-color: #393a34;
+}
+
+:root[data-theme="dark"] .site-footer {
+  background: #141512;
+}
+
+:root[data-theme="dark"] .button--dark {
+  background: #b69b70;
+  color: #191a18;
+}
+
+:root[data-theme="dark"] .button--dark:hover {
+  background: #d6c29e;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] .site-footer__bottom {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="dark"] .site-footer__credits {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+@media (max-width: 900px) {
+  :root[data-theme="dark"] .maison-search__field {
+    border-right-color: transparent;
+    border-bottom-color: var(--maison-border);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="dark"] *,
+  :root[data-theme="dark"] *::before,
+  :root[data-theme="dark"] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,219 +1,222 @@
 {
-    "rooms":  [
-                  {
-                      "id":  "room-101",
-                      "name":  "The Classic Suite",
-                      "type":  "Classic",
-                      "description":  "An elegant room with warm natural materials and a peaceful atmosphere.",
-                      "pricePerNight":  180,
-                      "capacity":  2,
-                      "status":  "available",
-                      "amenities":  [
-                                        "Wi-Fi",
-                                        "King bed",
-                                        "Air conditioning",
-                                        "Breakfast"
-                                    ],
-                      "images":  [
-
-                                 ],
-                      "rating":  4.8,
-                      "reviewCount":  124
-                  },
-                  {
-                      "id":  "room-102",
-                      "name":  "The Garden Deluxe",
-                      "type":  "Deluxe",
-                      "description":  "A spacious retreat with garden views and refined contemporary details.",
-                      "pricePerNight":  260,
-                      "capacity":  2,
-                      "status":  "available",
-                      "amenities":  [
-                                        "Wi-Fi",
-                                        "King bed",
-                                        "Garden view",
-                                        "Bathtub",
-                                        "Breakfast"
-                                    ],
-                      "images":  [
-
-                                 ],
-                      "rating":  4.9,
-                      "reviewCount":  86
-                  },
-                  {
-                      "id":  "room-201",
-                      "name":  "The Grand Residence",
-                      "type":  "Suite",
-                      "description":  "A generous suite designed for an exceptional and comfortable stay.",
-                      "pricePerNight":  420,
-                      "capacity":  4,
-                      "status":  "available",
-                      "amenities":  [
-                                        "Wi-Fi",
-                                        "King bed",
-                                        "Living room",
-                                        "Balcony",
-                                        "Breakfast"
-                                    ],
-                      "images":  [
-
-                                 ],
-                      "rating":  5.0,
-                      "reviewCount":  52
-                  },
-                  {
-                      "id":  "room-202",
-                      "name":  "The Presidential Suite",
-                      "type":  "Presidential",
-                      "description":  "Our most exclusive accommodation with exceptional space and privacy.",
-                      "pricePerNight":  680,
-                      "capacity":  4,
-                      "status":  "available",
-                      "amenities":  [
-                                        "Wi-Fi",
-                                        "Private terrace",
-                                        "Living room",
-                                        "Jacuzzi",
-                                        "Breakfast"
-                                    ],
-                      "images":  [
-
-                                 ],
-                      "rating":  5.0,
-                      "reviewCount":  31
-                  },
-                  {
-                      "id":  "room-301",
-                      "name":  "The Family Residence",
-                      "type":  "Family",
-                      "description":  "A comfortable residence with generous space for the whole family.",
-                      "pricePerNight":  350,
-                      "capacity":  5,
-                      "status":  "available",
-                      "amenities":  [
-                                        "Wi-Fi",
-                                        "Two bedrooms",
-                                        "Living room",
-                                        "Kitchenette"
-                                    ],
-                      "images":  [
-
-                                 ],
-                      "rating":  4.7,
-                      "reviewCount":  67
-                  },
-                  {
-                      "id":  "room-302",
-                      "name":  "The Ocean Deluxe",
-                      "type":  "Deluxe",
-                      "description":  "A bright and sophisticated room with beautiful panoramic views.",
-                      "pricePerNight":  290,
-                      "capacity":  2,
-                      "status":  "available",
-                      "amenities":  [
-                                        "Wi-Fi",
-                                        "King bed",
-                                        "Panoramic view",
-                                        "Balcony"
-                                    ],
-                      "images":  [
-
-                                 ],
-                      "rating":  4.9,
-                      "reviewCount":  93
-                  }
-              ],
-    "guests":  [
-                   {
-                       "id":  "guest-001",
-                       "name":  "Olivia Bennett",
-                       "email":  "olivia@example.com",
-                       "phone":  "+1 202 555 0101"
-                   },
-                   {
-                       "id":  "guest-002",
-                       "name":  "James Carter",
-                       "email":  "james@example.com",
-                       "phone":  "+1 202 555 0102"
-                   }
-               ],
-    "bookings":  [
-                     {
-                         "id":  "booking-001",
-                         "guestId":  "guest-001",
-                         "roomId":  "room-101",
-                         "checkIn":  "2026-12-10",
-                         "checkOut":  "2026-12-13",
-                         "status":  "confirmed",
-                         "services":  [
-                                          "service-breakfast"
-                                      ],
-                         "totalPrice":  594
-                     },
-                     {
-                         "id":  "booking-002",
-                         "guestId":  "guest-002",
-                         "roomId":  "room-201",
-                         "checkIn":  "2026-11-20",
-                         "checkOut":  "2026-11-23",
-                         "status":  "checked-in",
-                         "services":  [
-
-                                      ],
-                         "totalPrice":  1386
-                     }
-                 ],
-    "services":  [
-                     {
-                         "id":  "service-breakfast",
-                         "name":  "Breakfast Experience",
-                         "description":  "A curated breakfast served every morning.",
-                         "price":  18
-                     },
-                     {
-                         "id":  "service-spa",
-                         "name":  "Spa Access",
-                         "description":  "Access to the hotel\u0027s wellness and relaxation facilities.",
-                         "price":  45
-                     },
-                     {
-                         "id":  "service-transfer",
-                         "name":  "Airport Transfer",
-                         "description":  "Private airport transportation.",
-                         "price":  65
-                     },
-                     {
-                         "id":  "service-dinner",
-                         "name":  "Fine Dining Experience",
-                         "description":  "An exclusive dinner at the hotel restaurant.",
-                         "price":  85
-                     }
-                 ],
-    "reviews":  [
-
-                ],
-    "users":  [
-                  {
-                      "id":  "user-guest",
-                      "name":  "Olivia Bennett",
-                      "email":  "guest@hotel.com",
-                      "password":  "Guest123!",
-                      "role":  "guest"
-                  },
-                  {
-                      "id":  "user-reception",
-                      "name":  "Reception Manager",
-                      "email":  "reception@hotel.com",
-                      "password":  "Reception123!",
-                      "role":  "receptionist"
-                  },
-                  {
-                      "id":  "user-admin",
-                      "name":  "Hotel Administrator",
-                      "email":  "admin@hotel.com",
-                      "password":  "Admin123!",
-                      "role":  "admin"
-                  }
-              ]
+  "rooms": [
+    {
+      "id": "room-101",
+      "name": "The Classic Suite",
+      "type": "Classic",
+      "description": "An elegant room with warm natural materials and a peaceful atmosphere.",
+      "pricePerNight": 180,
+      "capacity": 2,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "King bed",
+        "Air conditioning",
+        "Breakfast"
+      ],
+      "images": [],
+      "rating": 4.8,
+      "reviewCount": 124
+    },
+    {
+      "id": "room-102",
+      "name": "The Garden Deluxe",
+      "type": "Deluxe",
+      "description": "A spacious retreat with garden views and refined contemporary details.",
+      "pricePerNight": 260,
+      "capacity": 2,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "King bed",
+        "Garden view",
+        "Bathtub",
+        "Breakfast"
+      ],
+      "images": [],
+      "rating": 4.9,
+      "reviewCount": 86
+    },
+    {
+      "id": "room-201",
+      "name": "The Grand Residence",
+      "type": "Suite",
+      "description": "A generous suite designed for an exceptional and comfortable stay.",
+      "pricePerNight": 420,
+      "capacity": 4,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "King bed",
+        "Living room",
+        "Balcony",
+        "Breakfast"
+      ],
+      "images": [],
+      "rating": 5,
+      "reviewCount": 52
+    },
+    {
+      "id": "room-202",
+      "name": "The Presidential Suite",
+      "type": "Presidential",
+      "description": "Our most exclusive accommodation with exceptional space and privacy.",
+      "pricePerNight": 680,
+      "capacity": 4,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "Private terrace",
+        "Living room",
+        "Jacuzzi",
+        "Breakfast"
+      ],
+      "images": [],
+      "rating": 5,
+      "reviewCount": 31
+    },
+    {
+      "id": "room-301",
+      "name": "The Family Residence",
+      "type": "Family",
+      "description": "A comfortable residence with generous space for the whole family.",
+      "pricePerNight": 350,
+      "capacity": 5,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "Two bedrooms",
+        "Living room",
+        "Kitchenette"
+      ],
+      "images": [],
+      "rating": 4.7,
+      "reviewCount": 67
+    },
+    {
+      "id": "room-302",
+      "name": "The Ocean Deluxe",
+      "type": "Deluxe",
+      "description": "A bright and sophisticated room with beautiful panoramic views.",
+      "pricePerNight": 290,
+      "capacity": 2,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "King bed",
+        "Panoramic view",
+        "Balcony"
+      ],
+      "images": [],
+      "rating": 4.9,
+      "reviewCount": 93
+    },
+    {
+      "name": "The Heritage Suite",
+      "type": "Suite",
+      "description": "An elegant suite with timeless details and a peaceful atmosphere.",
+      "pricePerNight": 320,
+      "capacity": 2,
+      "status": "available",
+      "amenities": [
+        "Wi-Fi",
+        "King bed",
+        "Balcony",
+        "Breakfast"
+      ],
+      "images": [],
+      "rating": 0,
+      "reviewCount": 0,
+      "id": "dfhkSePQMQE"
+    }
+  ],
+  "guests": [
+    {
+      "id": "guest-001",
+      "name": "Olivia Bennett",
+      "email": "olivia@example.com",
+      "phone": "+1 202 555 0101"
+    },
+    {
+      "id": "guest-002",
+      "name": "James Carter",
+      "email": "james@example.com",
+      "phone": "+1 202 555 0102"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "booking-001",
+      "guestId": "guest-001",
+      "roomId": "room-101",
+      "checkIn": "2026-12-10",
+      "checkOut": "2026-12-13",
+      "status": "confirmed",
+      "services": [
+        "service-breakfast"
+      ],
+      "totalPrice": 594
+    },
+    {
+      "id": "booking-002",
+      "guestId": "guest-002",
+      "roomId": "room-201",
+      "checkIn": "2026-11-20",
+      "checkOut": "2026-11-23",
+      "status": "checked-in",
+      "services": [],
+      "totalPrice": 1386
+    }
+  ],
+  "services": [
+    {
+      "id": "service-breakfast",
+      "name": "Breakfast Experience",
+      "description": "A curated breakfast served every morning.",
+      "price": 18
+    },
+    {
+      "id": "service-spa",
+      "name": "Spa Access",
+      "description": "Access to the hotel's wellness and relaxation facilities.",
+      "price": 45
+    },
+    {
+      "id": "service-transfer",
+      "name": "Airport Transfer",
+      "description": "Private airport transportation.",
+      "price": 65
+    },
+    {
+      "id": "service-dinner",
+      "name": "Fine Dining Experience",
+      "description": "An exclusive dinner at the hotel restaurant.",
+      "price": 85
+    }
+  ],
+  "reviews": [],
+  "users": [
+    {
+      "id": "user-guest",
+      "name": "Olivia Bennett",
+      "email": "guest@hotel.com",
+      "password": "Guest123!",
+      "role": "guest"
+    },
+    {
+      "id": "user-reception",
+      "name": "Reception Manager",
+      "email": "reception@hotel.com",
+      "password": "Reception123!",
+      "role": "receptionist"
+    },
+    {
+      "id": "user-admin",
+      "name": "Hotel Administrator",
+      "email": "admin@hotel.com",
+      "password": "Admin123!",
+      "role": "admin"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

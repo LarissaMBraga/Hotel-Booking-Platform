@@ -36,6 +36,9 @@ export interface Booking {
   status: "confirmed" | "checked-in" | "completed" | "cancelled";
   services: string[];
   totalPrice: number;
+  guestCount?: number;
+  paymentStatus?: "pending" | "paid" | "refunded";
+  paymentMethod?: string;
 }
 
 export interface HotelService {
