@@ -1,4 +1,4 @@
-﻿import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Bar,
@@ -121,7 +121,7 @@ export function AdminDashboardPage() {
   const revenue = filteredBookings
     .filter(
       (item) =>
-        item.status === "completed" || item.paymentStatus === "paid",
+        item.paymentStatus === "paid",
     )
     .reduce((total, item) => total + item.totalPrice, 0);
 
@@ -160,8 +160,7 @@ export function AdminDashboardPage() {
 
           return (
             bookingMonth === index &&
-            (booking.status === "completed" ||
-              booking.paymentStatus === "paid")
+            booking.paymentStatus === "paid"
           );
         })
         .reduce((sum, booking) => sum + booking.totalPrice, 0),
@@ -865,10 +864,3 @@ export function AdminDashboardPage() {
     </>
   );
 }
-
-
-
-
-
-
-
