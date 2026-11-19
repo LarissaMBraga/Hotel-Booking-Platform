@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +16,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { AvailabilityCalendar } from "@/components/booking/AvailabilityCalendar";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { api } from "@/services/api";
@@ -311,6 +312,16 @@ export function BookingPage() {
                 <CalendarDays size={22} />
               </div>
 
+              <AvailabilityCalendar
+                roomId={roomId}
+                bookings={bookings}
+                checkIn={checkIn}
+                checkOut={checkOut}
+                onDatesChange={(nextCheckIn, nextCheckOut) => {
+                  form.setValue("checkIn", nextCheckIn, { shouldValidate: true });
+                  form.setValue("checkOut", nextCheckOut, { shouldValidate: true });
+                }}
+              />
               <div className="booking-date-grid">
                 <div className="booking-field">
                   <label htmlFor="booking-check-in">Check-in</label>

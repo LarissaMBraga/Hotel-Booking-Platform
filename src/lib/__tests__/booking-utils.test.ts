@@ -28,6 +28,26 @@ const bookings: Booking[] = [
     services: [],
     totalPrice: 594,
   },
+  {
+    id: "booking-3",
+    guestId: "guest-3",
+    roomId: "room-103",
+    checkIn: "2026-12-10",
+    checkOut: "2026-12-13",
+    status: "completed",
+    services: [],
+    totalPrice: 594,
+  },
+  {
+    id: "booking-4",
+    guestId: "guest-4",
+    roomId: "room-104",
+    checkIn: "2026-12-10",
+    checkOut: "2026-12-13",
+    status: "checked-in",
+    services: [],
+    totalPrice: 594,
+  },
 ];
 
 describe("getNights", () => {
@@ -49,9 +69,15 @@ describe("getNights", () => {
 });
 
 describe("hasDateConflict", () => {
-  it("detects an overlapping reservation for the same room", () => {
+  it("detects an overlapping confirmed reservation", () => {
     expect(
       hasDateConflict("room-101", "2026-12-12", "2026-12-15", bookings),
+    ).toBe(true);
+  });
+
+  it("detects an overlapping checked-in reservation", () => {
+    expect(
+      hasDateConflict("room-104", "2026-12-12", "2026-12-15", bookings),
     ).toBe(true);
   });
 
@@ -72,6 +98,24 @@ describe("hasDateConflict", () => {
       hasDateConflict("room-102", "2026-12-11", "2026-12-12", bookings),
     ).toBe(false);
   });
+
+  it("ignores completed reservations", () => {
+    expect(
+      hasDateConflict("room-103", "2026-12-11", "2026-12-12", bookings),
+    ).toBe(false);
+  });
+
+  it("rejects invalid date ranges", () => {
+    expect(
+      hasDateConflict("room-101", "2026-12-13", "2026-12-10", bookings),
+    ).toBe(false);
+  });
+
+  it("returns false when a required value is missing", () => {
+    expect(hasDateConflict("", "2026-12-11", "2026-12-12", bookings)).toBe(
+      false,
+    );
+  });
 });
 
 describe("passesLuhn", () => {
@@ -90,7 +134,9 @@ describe("passesLuhn", () => {
 
 describe("isCardExpired", () => {
   it("accepts a card expiring after the current month", () => {
-    expect(isCardExpired("12/30", new Date("2026-11-17T12:00:00"))).toBe(false);
+    expect(isCardExpired("12/30", new Date("2026-11-17T12:00:00"))).toBe(
+      false,
+    );
   });
 
   it("rejects a card whose expiration month has passed", () => {

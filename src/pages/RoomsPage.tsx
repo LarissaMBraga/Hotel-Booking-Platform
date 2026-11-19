@@ -1,4 +1,4 @@
-﻿import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowDownWideNarrow,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "@/services/api";
+import { hasDateConflict } from "@/lib/booking-utils";
 import { RoomCard } from "@/components/booking/RoomCard";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
@@ -51,21 +52,6 @@ function getNumberParam(value: string | null, fallback: number) {
   if (!value) return fallback;
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-function hasDateConflict(
-  roomId: string,
-  checkIn: string,
-  checkOut: string,
-  bookings: Booking[],
-) {
-  return bookings.some((booking) => {
-    if (booking.roomId !== roomId || booking.status === "cancelled") {
-      return false;
-    }
-
-    return booking.checkIn < checkOut && booking.checkOut > checkIn;
-  });
 }
 
 export function RoomsPage() {
