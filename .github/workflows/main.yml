@@ -1,5 +1,4 @@
-﻿
-name: Deploy MAISON
+﻿name: Deploy MAISON
 
 on:
   push:
@@ -33,8 +32,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          VITE_BASE_PATH: /Hotel-Booking-Platform/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -51,4 +48,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
