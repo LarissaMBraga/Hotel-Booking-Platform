@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "api": "json-server mock-api/db.json --port 3001"
+    "api": "json-server mock-api/db.json --port 3001",
+    "test:setup": "node scripts/test-setup.mjs",
+    "test:cleanup": "node scripts/test-cleanup.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.7",

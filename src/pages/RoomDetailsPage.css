@@ -1,4 +1,4 @@
-﻿.room-detail-page {
+.room-detail-page {
   min-height: 100vh;
   background: #f8f7f4;
   color: #252522;
@@ -520,5 +520,130 @@
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+.room-detail-reviews {
+  padding: 38px 0 42px;
+  border-top: 1px solid #e6e2da;
+}
+
+.room-detail-reviews__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.room-detail-reviews__heading h2 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.room-detail-reviews__heading p {
+  margin: 10px 0 0;
+  color: #77766f;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.room-detail-reviews__summary {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  color: #a17c46;
+}
+
+.room-detail-reviews__summary strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.room-detail-reviews__summary span {
+  color: #77766f;
+  font-size: 11px;
+}
+
+.room-detail-reviews__list {
+  display: grid;
+  gap: 0;
+}
+
+.room-detail-review {
+  padding: 23px 0;
+  border-top: 1px solid #e6e2da;
+}
+
+.room-detail-review__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.room-detail-review__top h3 {
+  margin: 0;
+  color: #33332f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.room-detail-review__top time {
+  display: block;
+  margin-top: 6px;
+  color: #929087;
+  font-size: 10px;
+}
+
+.room-detail-review__stars {
+  display: flex;
+  gap: 3px;
+  color: #a17c46;
+}
+
+.room-detail-review > p {
+  margin: 15px 0 0;
+  color: #77766f;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.room-detail-reviews__empty {
+  padding: 22px 0;
+  color: #77766f;
+  font-size: 13px;
+}
+
+:root[data-theme="dark"] .room-detail-reviews,
+:root[data-theme="dark"] .room-detail-review {
+  border-color: #383832;
+}
+
+:root[data-theme="dark"] .room-detail-reviews__heading p,
+:root[data-theme="dark"] .room-detail-reviews__summary span,
+:root[data-theme="dark"] .room-detail-review__top time,
+:root[data-theme="dark"] .room-detail-review > p,
+:root[data-theme="dark"] .room-detail-reviews__empty {
+  color: #aaa89f;
+}
+
+:root[data-theme="dark"] .room-detail-review__top h3 {
+  color: #e8e5dc;
+}
+
+@media (max-width: 560px) {
+  .room-detail-reviews__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .room-detail-review__top {
+    flex-direction: column;
   }
 }
