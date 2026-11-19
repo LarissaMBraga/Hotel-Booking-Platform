@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const rootDirectory = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  base: process.env.VITE_BASE_PATH || "/hotel-booking-platform/",
+  base: process.env.VITE_BASE_PATH || "/Hotel-Booking-Platform/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -21,3 +21,4 @@ export default defineConfig({
     css: true,
   },
 });
+
