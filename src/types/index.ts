@@ -47,3 +47,14 @@ export interface HotelService {
   description: string;
   price: number;
 }
+
+export interface Review {
+  id: string;
+  bookingId: string;
+  guestId: string;
+  guestName: string;
+  roomId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}

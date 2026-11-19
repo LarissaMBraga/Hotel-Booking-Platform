@@ -194,7 +194,128 @@
       "price": 85
     }
   ],
-  "reviews": [],
+  "reviews": [
+    {
+      "rating": 5,
+      "guestName": "Sophie Bennett",
+      "id": "review-001",
+      "guestId": "sample-guest-001",
+      "comment": "A beautiful room with thoughtful details. The bed was exceptionally comfortable and the service made our stay feel special.",
+      "roomId": "room-101",
+      "createdAt": "2026-11-12T14:30:00.000Z",
+      "bookingId": "sample-booking-001"
+    },
+    {
+      "rating": 4,
+      "guestName": "Daniel Foster",
+      "id": "review-002",
+      "guestId": "sample-guest-002",
+      "comment": "Elegant, peaceful and very well maintained. We would happily stay here again.",
+      "roomId": "room-101",
+      "createdAt": "2026-11-08T10:15:00.000Z",
+      "bookingId": "sample-booking-002"
+    },
+    {
+      "rating": 5,
+      "guestName": "Amelia Clarke",
+      "id": "review-003",
+      "guestId": "sample-guest-003",
+      "comment": "Waking up to the garden views was wonderful. Every corner felt carefully designed.",
+      "roomId": "room-102",
+      "createdAt": "2026-11-14T09:20:00.000Z",
+      "bookingId": "sample-booking-003"
+    },
+    {
+      "rating": 5,
+      "guestName": "Oliver James",
+      "id": "review-004",
+      "guestId": "sample-guest-004",
+      "comment": "A relaxing escape with excellent amenities and genuinely attentive hospitality.",
+      "roomId": "room-102",
+      "createdAt": "2026-11-06T16:45:00.000Z",
+      "bookingId": "sample-booking-004"
+    },
+    {
+      "rating": 5,
+      "guestName": "Charlotte Reed",
+      "id": "review-005",
+      "guestId": "sample-guest-005",
+      "comment": "The residence exceeded our expectations. Spacious, refined and absolutely spotless.",
+      "roomId": "room-201",
+      "createdAt": "2026-11-13T11:00:00.000Z",
+      "bookingId": "sample-booking-005"
+    },
+    {
+      "rating": 5,
+      "guestName": "Henry Walker",
+      "id": "review-006",
+      "guestId": "sample-guest-006",
+      "comment": "Exceptional comfort and privacy. The attention to detail was impressive.",
+      "roomId": "room-201",
+      "createdAt": "2026-11-04T13:10:00.000Z",
+      "bookingId": "sample-booking-006"
+    },
+    {
+      "rating": 5,
+      "guestName": "Isabella Morgan",
+      "id": "review-007",
+      "guestId": "sample-guest-007",
+      "comment": "A truly memorable experience. The suite felt luxurious without losing its warmth.",
+      "roomId": "room-202",
+      "createdAt": "2026-11-15T15:25:00.000Z",
+      "bookingId": "sample-booking-007"
+    },
+    {
+      "rating": 5,
+      "guestName": "Theodore Hall",
+      "id": "review-008",
+      "guestId": "sample-guest-008",
+      "comment": "Beautiful interiors, generous space and outstanding service throughout our stay.",
+      "roomId": "room-202",
+      "createdAt": "2026-11-02T12:40:00.000Z",
+      "bookingId": "sample-booking-008"
+    },
+    {
+      "rating": 5,
+      "guestName": "Grace Mitchell",
+      "id": "review-009",
+      "guestId": "sample-guest-009",
+      "comment": "Perfect for a family trip. There was plenty of room for everyone and the atmosphere was lovely.",
+      "roomId": "room-301",
+      "createdAt": "2026-11-11T08:50:00.000Z",
+      "bookingId": "sample-booking-009"
+    },
+    {
+      "rating": 4,
+      "guestName": "Lucas Turner",
+      "id": "review-010",
+      "guestId": "sample-guest-010",
+      "comment": "Comfortable and practical, with lovely design touches. We had a very pleasant stay.",
+      "roomId": "room-301",
+      "createdAt": "2026-11-03T17:30:00.000Z",
+      "bookingId": "sample-booking-010"
+    },
+    {
+      "rating": 5,
+      "guestName": "Evelyn Brooks",
+      "id": "review-011",
+      "guestId": "sample-guest-011",
+      "comment": "The ocean views were breathtaking. A wonderful room for a quiet and restorative getaway.",
+      "roomId": "room-302",
+      "createdAt": "2026-11-16T10:05:00.000Z",
+      "bookingId": "sample-booking-011"
+    },
+    {
+      "rating": 5,
+      "guestName": "Benjamin Scott",
+      "id": "review-012",
+      "guestId": "sample-guest-012",
+      "comment": "Everything was excellent, from the beautiful room to the warm and professional service.",
+      "roomId": "room-302",
+      "createdAt": "2026-11-07T14:15:00.000Z",
+      "bookingId": "sample-booking-012"
+    }
+  ],
   "users": [
     {
       "id": "user-guest",

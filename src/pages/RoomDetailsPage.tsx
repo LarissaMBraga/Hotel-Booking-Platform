@@ -1,4 +1,4 @@
-﻿import { useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -11,7 +11,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { formatCurrency } from "@/lib/utils";
-import type { Booking, Room } from "@/types";
+import type { Booking, Review, Room } from "@/types";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import "./RoomDetailsPage.css";
@@ -65,14 +65,16 @@ function hasDateConflict(
 }
 
 async function fetchRoomDetails(roomId: string) {
-  const [roomResponse, bookingsResponse] = await Promise.all([
+  const [roomResponse, bookingsResponse, reviewsResponse] = await Promise.all([
     api.get<Room>(`/rooms/${roomId}`),
     api.get<Booking[]>("/bookings"),
+    api.get<Review[]>("/reviews"),
   ]);
 
   return {
     room: roomResponse.data,
     bookings: bookingsResponse.data,
+    reviews: reviewsResponse.data,
   };
 }
 
@@ -96,6 +98,13 @@ export function RoomDetailsPage() {
 
   const room = data?.room;
   const bookings = data?.bookings ?? [];
+  const reviews = (data?.reviews ?? [])
+    .filter((review) => review.roomId === roomId)
+    .sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() -
+        new Date(first.createdAt).getTime(),
+    );
   const gallery = room ? getRoomGallery(room) : [];
   const nights = getNights(checkIn, checkOut);
   const subtotal = room ? nights * room.pricePerNight : 0;
@@ -267,6 +276,61 @@ export function RoomDetailsPage() {
                 </div>
               </section>
 
+              <section className="room-detail-reviews">
+                <div className="room-detail-reviews__heading">
+                  <div>
+                    <span className="room-detail-eyebrow">GUEST STORIES</span>
+                    <h2>Words from our guests.</h2>
+                    <p>Discover what guests have loved about their MAISON experience.</p>
+                  </div>
+                  <div className="room-detail-reviews__summary">
+                    <Star size={18} fill="currentColor" />
+                    <strong>{room.rating.toFixed(1)}</strong>
+                    <span>{room.reviewCount} guest reviews</span>
+                  </div>
+                </div>
+
+                {reviews.length > 0 ? (
+                  <div className="room-detail-reviews__list">
+                    {reviews.map((review) => (
+                      <article className="room-detail-review" key={review.id}>
+                        <div className="room-detail-review__top">
+                          <div>
+                            <h3>{review.guestName}</h3>
+                            <time dateTime={review.createdAt}>
+                              {new Date(review.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "long",
+                                  day: "numeric",
+                                  year: "numeric",
+                                },
+                              )}
+                            </time>
+                          </div>
+                          <div
+                            className="room-detail-review__stars"
+                            aria-label={`${review.rating} out of 5 stars`}
+                          >
+                            {Array.from({ length: 5 }, (_, index) => (
+                              <Star
+                                key={index}
+                                size={14}
+                                fill={index < review.rating ? "currentColor" : "none"}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p>{review.comment}</p>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="room-detail-reviews__empty">
+                    No written reviews yet. Be the first to share your experience.
+                  </p>
+                )}
+              </section>
               <section className="room-detail-note">
                 <span className="room-detail-note__mark">M</span>
                 <div>
@@ -362,7 +426,7 @@ export function RoomDetailsPage() {
                   <div className="room-detail-price-summary">
                     <div>
                       <span>
-                        {formatCurrency(room.pricePerNight)} × {nights} nights
+                        {formatCurrency(room.pricePerNight)} Ã— {nights} nights
                       </span>
                       <strong>{formatCurrency(subtotal)}</strong>
                     </div>
