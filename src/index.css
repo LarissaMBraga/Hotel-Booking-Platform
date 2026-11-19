@@ -870,3 +870,290 @@ a {
   }
 }
 
+
+/* MAISON DARK MODE - ALL PAGES */
+
+/* Page backgrounds */
+:root[data-theme="dark"] .rooms-page,
+:root[data-theme="dark"] .room-detail-page,
+:root[data-theme="dark"] .booking-page,
+:root[data-theme="dark"] .checkout-page,
+:root[data-theme="dark"] .auth-layout,
+:root[data-theme="dark"] .auth-page,
+:root[data-theme="dark"] .dashboard-page {
+  background: var(--maison-page);
+  color: var(--maison-text);
+}
+
+/* Shared headings and text */
+:root[data-theme="dark"] .rooms-results__heading h2,
+:root[data-theme="dark"] .rooms-price-filter__heading h3,
+:root[data-theme="dark"] .room-detail-heading h1,
+:root[data-theme="dark"] .room-detail-overview h2,
+:root[data-theme="dark"] .room-detail-amenities h2,
+:root[data-theme="dark"] .room-detail-reviews__heading h2,
+:root[data-theme="dark"] .booking-heading h1,
+:root[data-theme="dark"] .booking-state h1,
+:root[data-theme="dark"] .booking-panel__heading h2,
+:root[data-theme="dark"] .booking-summary__body h2,
+:root[data-theme="dark"] .checkout-heading h1,
+:root[data-theme="dark"] .checkout-state h1,
+:root[data-theme="dark"] .checkout-success h1,
+:root[data-theme="dark"] .checkout-panel-heading h2,
+:root[data-theme="dark"] .checkout-order h2,
+:root[data-theme="dark"] .auth-card h1,
+:root[data-theme="dark"] .dashboard-section-heading h2,
+:root[data-theme="dark"] .dashboard-booking h3,
+:root[data-theme="dark"] .dashboard-empty h3,
+:root[data-theme="dark"] .dashboard-metric > strong,
+:root[data-theme="dark"] .dashboard-room > strong {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .rooms-results__heading p,
+:root[data-theme="dark"] .rooms-toolbar__label,
+:root[data-theme="dark"] .rooms-price-filter__value,
+:root[data-theme="dark"] .room-detail-heading p,
+:root[data-theme="dark"] .room-detail-overview p,
+:root[data-theme="dark"] .room-detail-note p,
+:root[data-theme="dark"] .room-detail-booking__footnote,
+:root[data-theme="dark"] .room-detail-reviews__heading p,
+:root[data-theme="dark"] .room-detail-review > p,
+:root[data-theme="dark"] .booking-heading > p,
+:root[data-theme="dark"] .booking-state > p,
+:root[data-theme="dark"] .booking-panel__heading p,
+:root[data-theme="dark"] .booking-secure-note,
+:root[data-theme="dark"] .booking-summary__footnote,
+:root[data-theme="dark"] .checkout-heading p,
+:root[data-theme="dark"] .checkout-state p,
+:root[data-theme="dark"] .checkout-success > p,
+:root[data-theme="dark"] .checkout-demo-note span,
+:root[data-theme="dark"] .checkout-order__note,
+:root[data-theme="dark"] .auth-card__description,
+:root[data-theme="dark"] .auth-card__footer p,
+:root[data-theme="dark"] .dashboard-hero p,
+:root[data-theme="dark"] .dashboard-muted,
+:root[data-theme="dark"] .dashboard-empty p,
+:root[data-theme="dark"] .dashboard-history-empty,
+:root[data-theme="dark"] .dashboard-footnote,
+:root[data-theme="dark"] .dashboard-chart-note {
+  color: var(--maison-text-muted);
+}
+
+/* Rooms search and filters */
+:root[data-theme="dark"] .rooms-price-filter,
+:root[data-theme="dark"] .rooms-search,
+:root[data-theme="dark"] .rooms-search__field,
+:root[data-theme="dark"] .rooms-filter select,
+:root[data-theme="dark"] .rooms-sort select,
+:root[data-theme="dark"] .rooms-price-filter__sliders label {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .rooms-search__field input,
+:root[data-theme="dark"] .rooms-search__field select,
+:root[data-theme="dark"] .rooms-filter select,
+:root[data-theme="dark"] .rooms-sort select {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .rooms-search__field input::placeholder {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .rooms-pagination button {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .rooms-pagination button:hover:not(:disabled),
+:root[data-theme="dark"] .rooms-pagination button.rooms-pagination__active {
+  border-color: var(--maison-accent);
+  background: var(--maison-accent);
+  color: #191a18;
+}
+
+/* Room details */
+:root[data-theme="dark"] .room-detail-information,
+:root[data-theme="dark"] .room-detail-booking,
+:root[data-theme="dark"] .room-detail-highlights > div,
+:root[data-theme="dark"] .room-detail-amenity,
+:root[data-theme="dark"] .room-detail-review,
+:root[data-theme="dark"] .room-detail-price-summary {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .room-detail-field input,
+:root[data-theme="dark"] .room-detail-field select {
+  border-color: var(--maison-border);
+  background: var(--maison-surface-muted);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .room-detail-field input::placeholder {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .room-detail-note {
+  border-color: var(--maison-border);
+  background: var(--maison-surface-muted);
+  color: var(--maison-text);
+}
+
+/* Booking */
+:root[data-theme="dark"] .booking-panel,
+:root[data-theme="dark"] .booking-summary {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .booking-field input {
+  border-color: var(--maison-border);
+  background: var(--maison-surface-muted);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .booking-field input::placeholder {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .booking-service {
+  border-color: var(--maison-border);
+  background: var(--maison-surface-muted);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .booking-divider,
+:root[data-theme="dark"] .booking-summary__line {
+  border-color: var(--maison-border);
+}
+
+:root[data-theme="dark"] .booking-summary__meta,
+:root[data-theme="dark"] .booking-summary__dates,
+:root[data-theme="dark"] .booking-summary__line,
+:root[data-theme="dark"] .booking-summary__total {
+  color: var(--maison-text);
+}
+
+/* Checkout */
+:root[data-theme="dark"] .checkout-payment-panel,
+:root[data-theme="dark"] .checkout-order,
+:root[data-theme="dark"] .checkout-demo-note,
+:root[data-theme="dark"] .checkout-method,
+:root[data-theme="dark"] .checkout-method-detail,
+:root[data-theme="dark"] .checkout-pending-note,
+:root[data-theme="dark"] .checkout-success__reference,
+:root[data-theme="dark"] .checkout-success__details {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .checkout-method__copy strong,
+:root[data-theme="dark"] .checkout-demo-note strong,
+:root[data-theme="dark"] .checkout-order__dates strong,
+:root[data-theme="dark"] .checkout-order__line,
+:root[data-theme="dark"] .checkout-order__total,
+:root[data-theme="dark"] .checkout-success__reference strong,
+:root[data-theme="dark"] .checkout-success__details strong {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .checkout-method__copy small,
+:root[data-theme="dark"] .checkout-order__dates small,
+:root[data-theme="dark"] .checkout-success__reference span,
+:root[data-theme="dark"] .checkout-success__details span {
+  color: var(--maison-text-muted);
+}
+
+/* Authentication */
+:root[data-theme="dark"] .auth-card {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .auth-form label,
+:root[data-theme="dark"] .auth-demo__heading,
+:root[data-theme="dark"] .auth-demo__account {
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .auth-form input,
+:root[data-theme="dark"] .auth-demo__account code {
+  border-color: var(--maison-border);
+  background: var(--maison-surface-muted);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .auth-form input::placeholder {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .auth-card__footer {
+  border-color: var(--maison-border);
+}
+
+/* Dashboard panels and cards */
+:root[data-theme="dark"] .dashboard-booking,
+:root[data-theme="dark"] .dashboard-history__item,
+:root[data-theme="dark"] .dashboard-metric,
+:root[data-theme="dark"] .dashboard-chart-card,
+:root[data-theme="dark"] .dashboard-room,
+:root[data-theme="dark"] .reception-row,
+:root[data-theme="dark"] .dashboard-admin-section,
+:root[data-theme="dark"] .dashboard-review-form,
+:root[data-theme="dark"] .dashboard-history-entry {
+  border-color: var(--maison-border);
+  background: var(--maison-surface);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .dashboard-period-control select,
+:root[data-theme="dark"] .dashboard-room-form input,
+:root[data-theme="dark"] .dashboard-room-form select,
+:root[data-theme="dark"] .dashboard-room-form textarea,
+:root[data-theme="dark"] .dashboard-review-textarea {
+  border-color: var(--maison-border);
+  background: var(--maison-surface-muted);
+  color: var(--maison-text);
+}
+
+:root[data-theme="dark"] .dashboard-period-control select:focus,
+:root[data-theme="dark"] .dashboard-room-form input:focus,
+:root[data-theme="dark"] .dashboard-room-form select:focus,
+:root[data-theme="dark"] .dashboard-room-form textarea:focus,
+:root[data-theme="dark"] .dashboard-review-textarea:focus {
+  border-color: var(--maison-accent);
+}
+
+:root[data-theme="dark"] .dashboard-room-form__fields label,
+:root[data-theme="dark"] .dashboard-room-form__fields label small,
+:root[data-theme="dark"] .dashboard-review-footer,
+:root[data-theme="dark"] .dashboard-review-hint,
+:root[data-theme="dark"] .reception-row span {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .dashboard-tabs {
+  border-color: var(--maison-border);
+}
+
+:root[data-theme="dark"] .dashboard-tabs button {
+  color: var(--maison-text-muted);
+}
+
+:root[data-theme="dark"] .dashboard-tabs button.is-active {
+  color: var(--maison-accent);
+}
+
+:root[data-theme="dark"] .dashboard-toolbar {
+  color: var(--maison-text);
+}
+
