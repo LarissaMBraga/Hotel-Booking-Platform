@@ -11,7 +11,9 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { formatCurrency } from "@/lib/utils";
+import { getNights, hasDateConflict } from "@/lib/booking-utils";
 import type { Booking, Review, Room } from "@/types";
+import { AvailabilityCalendar } from "@/components/booking/AvailabilityCalendar";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import "./RoomDetailsPage.css";
@@ -31,37 +33,10 @@ function getLocalDate() {
   return `${year}-${month}-${day}`;
 }
 
-function getNights(checkIn: string, checkOut: string) {
-  if (!checkIn || !checkOut) return 0;
-
-  const start = new Date(`${checkIn}T00:00:00`);
-  const end = new Date(`${checkOut}T00:00:00`);
-  const difference = end.getTime() - start.getTime();
-
-  return difference > 0
-    ? Math.round(difference / (1000 * 60 * 60 * 24))
-    : 0;
-}
-
 function getRoomGallery(room: Room) {
   return room.images?.length
     ? room.images.filter(Boolean)
     : fallbackGallery;
-}
-
-function hasDateConflict(
-  roomId: string,
-  checkIn: string,
-  checkOut: string,
-  bookings: Booking[],
-) {
-  return bookings.some(
-    (booking) =>
-      booking.roomId === roomId &&
-      booking.status !== "cancelled" &&
-      booking.checkIn < checkOut &&
-      booking.checkOut > checkIn,
-  );
 }
 
 async function fetchRoomDetails(roomId: string) {
@@ -351,6 +326,16 @@ export function RoomDetailsPage() {
               </div>
 
               <form onSubmit={handleBooking}>
+                <AvailabilityCalendar
+                  roomId={room.id}
+                  bookings={bookings}
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  onDatesChange={(nextCheckIn, nextCheckOut) => {
+                    setCheckIn(nextCheckIn);
+                    setCheckOut(nextCheckOut);
+                  }}
+                />
                 <div className="room-detail-field">
                   <label htmlFor="room-check-in">Check-in</label>
                   <input

@@ -16,10 +16,15 @@ export function hasDateConflict(
   checkOut: string,
   bookings: Booking[],
 ): boolean {
+  if (!roomId || !checkIn || !checkOut || checkOut <= checkIn) {
+    return false;
+  }
+
   return bookings.some(
     (booking) =>
       booking.roomId === roomId &&
-      booking.status !== "cancelled" &&
+      (booking.status === "confirmed" ||
+        booking.status === "checked-in") &&
       booking.checkIn < checkOut &&
       booking.checkOut > checkIn,
   );
