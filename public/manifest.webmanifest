@@ -1,14 +1,15 @@
 ﻿{
-  "name": "maison-hotels-residences",
+  "name": "MAISON Hotels & Residences",
   "short_name": "MAISON",
   "description": "Thoughtful stays, considered details.",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#faf9f6",
   "theme_color": "#292b26",
   "icons": [
     {
-      "src": "/maison-icon.svg",
+      "src": "./maison-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

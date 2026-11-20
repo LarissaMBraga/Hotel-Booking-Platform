@@ -705,3 +705,14 @@
     height: 35px;
   }
 }
+
+/* WCAG contrast refinements */
+.rooms-results__heading h2 em,
+.rooms-note .maison-eyebrow,
+.rooms-price-filter__eyebrow {
+  color: #72572f;
+}
+
+.rooms-note__signature {
+  color: #625e56;
+}

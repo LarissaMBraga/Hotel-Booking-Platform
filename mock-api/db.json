@@ -7,7 +7,7 @@
       "description": "An elegant room with warm natural materials and a peaceful atmosphere.",
       "pricePerNight": 180,
       "capacity": 2,
-      "status": "available",
+      "status": "booked",
       "amenities": [
         "Wi-Fi",
         "King bed",
@@ -19,32 +19,13 @@
       "reviewCount": 124
     },
     {
-      "id": "room-102",
-      "name": "The Garden Deluxe",
-      "type": "Deluxe",
-      "description": "A spacious retreat with garden views and refined contemporary details.",
-      "pricePerNight": 260,
-      "capacity": 2,
-      "status": "available",
-      "amenities": [
-        "Wi-Fi",
-        "King bed",
-        "Garden view",
-        "Bathtub",
-        "Breakfast"
-      ],
-      "images": [],
-      "rating": 4.9,
-      "reviewCount": 86
-    },
-    {
       "id": "room-201",
       "name": "The Grand Residence",
       "type": "Suite",
       "description": "A generous suite designed for an exceptional and comfortable stay.",
       "pricePerNight": 420,
       "capacity": 4,
-      "status": "available",
+      "status": "booked",
       "amenities": [
         "Wi-Fi",
         "King bed",
@@ -128,6 +109,21 @@
       "rating": 0,
       "reviewCount": 0,
       "id": "dfhkSePQMQE"
+    },
+    {
+      "name": "Garden Suite",
+      "type": "Suite",
+      "description": "Garden Suite",
+      "pricePerNight": 180,
+      "capacity": 2,
+      "status": "available",
+      "amenities": [
+        "Garden View"
+      ],
+      "images": [],
+      "rating": 0,
+      "reviewCount": 0,
+      "id": "MatF4OLwW2I"
     }
   ],
   "guests": [
@@ -142,6 +138,12 @@
       "name": "James Carter",
       "email": "james@example.com",
       "phone": "+1 202 555 0102"
+    },
+    {
+      "name": "Olivia Bennett",
+      "email": "guest@hotel.com",
+      "phone": "",
+      "id": "cLsWX9JCJTA"
     }
   ],
   "bookings": [
@@ -166,6 +168,38 @@
       "status": "checked-in",
       "services": [],
       "totalPrice": 1386
+    },
+    {
+      "guestId": "cLsWX9JCJTA",
+      "roomId": "room-201",
+      "checkIn": "2026-11-24",
+      "checkOut": "2026-11-26",
+      "status": "confirmed",
+      "services": [
+        "service-transfer",
+        "service-breakfast"
+      ],
+      "totalPrice": 1015.3,
+      "guestCount": 2,
+      "paymentStatus": "simulated",
+      "paymentMethod": "card",
+      "id": "3uF7vYyLmlM"
+    },
+    {
+      "guestId": "cLsWX9JCJTA",
+      "roomId": "room-101",
+      "checkIn": "2026-11-24",
+      "checkOut": "2026-11-27",
+      "status": "confirmed",
+      "services": [
+        "service-transfer",
+        "service-breakfast"
+      ],
+      "totalPrice": 685.3,
+      "guestCount": 1,
+      "paymentStatus": "simulated",
+      "paymentMethod": "card",
+      "id": "5YYNbLQYQfc"
     }
   ],
   "services": [
@@ -221,7 +255,7 @@
       "id": "review-003",
       "guestId": "sample-guest-003",
       "comment": "Waking up to the garden views was wonderful. Every corner felt carefully designed.",
-      "roomId": "room-102",
+      "roomId": null,
       "createdAt": "2026-11-14T09:20:00.000Z",
       "bookingId": "sample-booking-003"
     },
@@ -231,7 +265,7 @@
       "id": "review-004",
       "guestId": "sample-guest-004",
       "comment": "A relaxing escape with excellent amenities and genuinely attentive hospitality.",
-      "roomId": "room-102",
+      "roomId": null,
       "createdAt": "2026-11-06T16:45:00.000Z",
       "bookingId": "sample-booking-004"
     },

@@ -73,7 +73,7 @@ export function HomePage() {
 
       <main>
         <section className="maison-hero">
-          <div className="maison-hero__image" />
+          <img className="maison-hero__image" src={new URL("../assets/hero-maison-960-q55.webp", import.meta.url).href} srcSet={`${new URL("../assets/hero-maison-640.webp", import.meta.url).href} 640w, ${new URL("../assets/hero-maison-960-q55.webp", import.meta.url).href} 960w, ${new URL("../assets/hero-maison-optimized.webp", import.meta.url).href} 1920w`} sizes="100vw" alt="" fetchPriority="high" decoding="async" />
           <div className="maison-hero__overlay" />
 
           <div className="maison-hero__content">

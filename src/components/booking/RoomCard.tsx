@@ -1,4 +1,4 @@
-﻿import { ArrowUpRight, Star } from "lucide-react";
+import { ArrowUpRight, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Room } from "@/types";
 import { formatCurrency } from "@/lib/utils";
@@ -9,13 +9,13 @@ type RoomCardProps = {
 
 const roomImages: Record<string, string> = {
   standard:
-    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=85",
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=75",
   deluxe:
-    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=85",
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=75",
   suite:
-    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85",
+    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=75",
   default:
-    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=85",
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=75",
 };
 
 function getRoomImage(room: Room) {

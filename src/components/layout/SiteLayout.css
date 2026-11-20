@@ -558,3 +558,37 @@
     transition: none;
   }
 }
+
+/* WCAG contrast refinements */
+.site-footer__description {
+  color: #d0cec7;
+}
+
+.site-footer__column > a {
+  color: #d0cec7;
+}
+
+.site-footer__newsletter p {
+  color: #d0cec7;
+}
+
+.site-footer__bottom {
+  color: #c6c2b9;
+}
+
+.site-footer__credits {
+  color: #c6c2b9;
+}
+
+.site-footer__credits strong {
+  color: #ffffff;
+}
+
+.site-footer__github,
+.site-footer__back-to-top {
+  color: #d0cec7;
+}
+
+:root[data-theme="dark"] .site-footer__credits {
+  color: #c6c2b9;
+}

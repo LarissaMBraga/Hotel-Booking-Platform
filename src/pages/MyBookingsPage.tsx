@@ -9,7 +9,6 @@ import {
   Star,
   XCircle,
 } from "lucide-react";
-import { jsPDF } from "jspdf";
 import { api } from "@/services/api";
 import { useAuthStore } from "@/stores/auth-store";
 import SiteHeader from "@/components/layout/SiteHeader";
@@ -65,7 +64,8 @@ const date = (value: string) =>
     year: "numeric",
   });
 
-function downloadInvoice(booking: Booking, room?: Room) {
+async function downloadInvoice(booking: Booking, room?: Room) {
+  const { jsPDF } = await import("jspdf");
   const document = new jsPDF();
   document.setFont("helvetica", "bold");
   document.setFontSize(24);
